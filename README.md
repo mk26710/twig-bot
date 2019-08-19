@@ -10,4 +10,4 @@
 - Защита от добавления бота на сторонние серверы
 
 ## Устанока
-Полностью схожа с ботом (simple-xp-bot)[https://github.com/defracted/simple-xp-bot]
+Полностью схожа с ботом [simple-xp-bot](https://github.com/defracted/simple-xp-bot)
