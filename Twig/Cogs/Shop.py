@@ -14,8 +14,8 @@ def check_if_maintainer(ctx):
 
 class Shop(commands.Cog, name='Магазинчик'):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     async def roles_shop_embed(self, ctx):
         message = await ctx.send(embed=discord.Embed(
@@ -165,7 +165,7 @@ class Shop(commands.Cog, name='Магазинчик'):
                 author_new_balance = int(author_balance) - int(price)
                 await update_data('xp', author_new_balance, 'user', author.id)
 
-                log_chan = self.client.get_channel(BOT_XP_LOGS)
+                log_chan = self.bot.get_channel(BOT_XP_LOGS)
                 await log_chan.send(embed=discord.Embed(
                     timestamp=datetime.datetime.utcnow(),
                     colour=role.colour

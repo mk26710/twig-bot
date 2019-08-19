@@ -9,8 +9,8 @@ from Twig.Utils.UserConverter import Target
 
 class Levels(commands.Cog, name='Уровни'):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     # ===============================
 
@@ -19,7 +19,7 @@ class Levels(commands.Cog, name='Уровни'):
     async def on_message(self, message):
         if message.content.startswith(BOT_PREFIX):
             return
-        if message.author.id == self.client.user.id:
+        if message.author.id == self.bot.user.id:
             return
         if message.author.bot is True:
             return
@@ -32,7 +32,7 @@ class Levels(commands.Cog, name='Уровни'):
         del role
 
         user_id = message.author.id
-        log_chan = self.client.get_channel(BOT_XP_LOGS)
+        log_chan = self.bot.get_channel(BOT_XP_LOGS)
         temp_embed = discord.Embed()
 
         # Проверка, если пользователь существует в БД
@@ -94,7 +94,7 @@ class Levels(commands.Cog, name='Уровни'):
         data = await fetch_top_5()
         user = None
         top_1_id = int(data[0].split(' $$$ ')[0])
-        top_1_user_obj = await self.client.fetch_user(top_1_id)
+        top_1_user_obj = await self.bot.fetch_user(top_1_id)
 
         temp_embed.set_footer(
             text='%s является абсолютным лидером! Ура!' % top_1_user_obj,
@@ -105,7 +105,7 @@ class Levels(commands.Cog, name='Уровни'):
 
         for i in range(len(data)):
             temp_data = data[i].split(' $$$ ')
-            user = await self.client.fetch_user(int(temp_data[0]))
+            user = await self.bot.fetch_user(int(temp_data[0]))
 
             temp_embed.add_field(
                 name='[#%s] ' % str(i + 1) + str(user) + ' (' + str(user.id) + ')',
@@ -122,7 +122,7 @@ class Levels(commands.Cog, name='Уровни'):
 
         temp_embed = discord.Embed()
 
-        if user is self.client.user:
+        if user is self.bot.user:
             return await ctx.send(f"Оу. Но создатель решил, что я не могу иметь уровень! Просите. Бип. Буп.")
 
         if user is None:

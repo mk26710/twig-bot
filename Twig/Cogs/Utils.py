@@ -16,8 +16,8 @@ def check_if_maintainer(ctx):
 
 class Utils(commands.Cog, name='Разное'):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command(name='hug', aliases=['обнять'], brief='Позволяет делать обнимашки с:')
     @commands.cooldown(3, 10, type=BucketType.user)
@@ -36,7 +36,7 @@ class Utils(commands.Cog, name='Разное'):
         message = await ctx.send(":ping_pong:")
         t2 = time.perf_counter()
         rest = round((t2 - t1) * 1000)
-        latency = round(self.client.latency * 1000, 2)
+        latency = round(self.bot.latency * 1000, 2)
         await message.edit(content=f":ping_pong: Задержка отправки запросов составляет **{rest}мс** | " +
                                    f"Задержка «сердцебияния» составляет **{latency}мс**")
 
@@ -52,8 +52,8 @@ class Utils(commands.Cog, name='Разное'):
                 colour=0xF1C41F)
             )
 
-        await self.client.fetch_channel(int(channel))
-        channel = self.client.get_channel(int(channel))
+        await self.bot.fetch_channel(int(channel))
+        channel = self.bot.get_channel(int(channel))
 
         return await ctx.send(embed=discord.Embed(
             colour=0x2ECC71,
@@ -68,7 +68,7 @@ class Utils(commands.Cog, name='Разное'):
     async def _userinfo(self, ctx, user: discord.User = None):
         if user is None:
             user = member = ctx.author
-            user = await self.client.fetch_user(user.id)
+            user = await self.bot.fetch_user(user.id)
         else:
             member = None if ctx.guild is None else ctx.guild.get_member(user.id)
 
@@ -134,18 +134,19 @@ class Utils(commands.Cog, name='Разное'):
     async def about(self, ctx):
         try:
             uptime = time.time() - BOT_STARTED_AT
-            uptime = time.strftime("%Hh %Mm %Ss", time.gmtime(uptime))
-            guilds_number = str(len(self.client.guilds))
+            uptime = time.strftime("%H h. %M m. %S s.", time.gmtime(uptime))
+            uptime = uptime.replace("h.", "ч.").replace("m.", "мин.").replace("s.", "сек.")
+            guilds_number = str(len(self.bot.guilds))
             users_total = str(len(await fetch_whole_table()))
 
-            creator = self.client.get_user(576322791129743361)
+            creator = self.bot.get_user(576322791129743361)
 
             repo = git.Repo(".git")
             commit = repo.head.commit
             sha = repo.head.object.hexsha
             short_sha = repo.git.rev_parse(sha, short=7)
 
-            temp_embed_desc = f':wave: Привет! Я {self.client.user.name}!\n' + \
+            temp_embed_desc = f':wave: Привет! Я {self.bot.user.name}!\n' + \
                               'Я бот, который подсчитывает опыт.\n\n' + \
                               '**Немного статистики:**\n' + \
                               '• Считаю опыт на %s серверах\n' % guilds_number + \
@@ -161,7 +162,7 @@ class Utils(commands.Cog, name='Разное'):
             temp_embed.set_footer(text='Запрашивает %s (%s)' % (ctx.author, ctx.author.id),
                                   icon_url=ctx.author.avatar_url)
             temp_embed.description = temp_embed_desc
-            temp_embed.title = f'{self.client.user.name}'
+            temp_embed.title = f'{self.bot.user.name}'
 
             await ctx.send(embed=temp_embed)
             del uptime, temp_embed, commit, repo, sha, short_sha, guilds_number, users_total, temp_embed_desc

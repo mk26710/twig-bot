@@ -5,8 +5,8 @@ from Twig.TwigCore import *
 
 
 class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -19,7 +19,7 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
             return
 
         # ignored = commands.UserInputError
-        log_channel = self.client.get_channel(BOT_MAIN_LOGS)
+        log_channel = self.bot.get_channel(BOT_MAIN_LOGS)
         error = getattr(error, 'original', error)
 
         # Все типы ошибок, внутри ignored - будут игнорироваться обработчиком

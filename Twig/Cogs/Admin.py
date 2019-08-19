@@ -11,8 +11,8 @@ from Twig.Utils.UserConverter import Target
 
 class Admin(commands.Cog, name='Админские'):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     async def cog_check(self, ctx):
         return await ctx.bot.is_owner(ctx.author) or ctx.author.id in BOT_MAINTAINERS
@@ -28,7 +28,7 @@ class Admin(commands.Cog, name='Админские'):
     async def add(self, ctx, user: discord.User, xp):
         user = Target(user)
 
-        if user.original is self.client.user:
+        if user.original is self.bot.user:
             return await ctx.send("Оу. Но создатель решил, что я не могу иметь уровень! Простите. Бип. Буп.")
 
         if user.bot is True:
@@ -66,7 +66,7 @@ class Admin(commands.Cog, name='Админские'):
                         f' изменяет баланс **{user.tag}** (`{user.strID}`)\n\n' +
                         f'**Добавляет к балансу:** {xp} очков опыта\n' +
                         f'**Новый баланс:** {temp_xp} очков опыта',
-            log_to=BOT_XP_LOGS, client=self.client
+            log_to=BOT_XP_LOGS, client=self.bot
         ).send_log()
 
         return await message.edit(
@@ -83,7 +83,7 @@ class Admin(commands.Cog, name='Админские'):
     async def set(self, ctx, user: discord.User, xp):
         user = Target(user)
 
-        if user.original is self.client.user:
+        if user.original is self.bot.user:
             return await ctx.send("Оу. Но создатель решил, что я не могу иметь уровень! Простите. Бип. Буп.")
 
         if user.bot is True:
@@ -115,7 +115,7 @@ class Admin(commands.Cog, name='Админские'):
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
                         f' изменяет баланс **{user.tag}** (`{user.strID}`)\n\n' +
                         f'**Новый баланс:** {new_xp} очков опыта',
-            log_to=BOT_XP_LOGS, client=self.client
+            log_to=BOT_XP_LOGS, client=self.bot
         ).send_log()
 
         return await message.edit(
@@ -130,7 +130,7 @@ class Admin(commands.Cog, name='Админские'):
     @axp.command()
     @commands.is_owner()
     async def add_user(self, ctx, user: discord.User):
-        if user is self.client.user:
+        if user is self.bot.user:
             return await ctx.send(f"Оу. Но создатель решил, что я не могу иметь уровень! Просите. Бип. Буп.")
 
         if user.bot is True:
@@ -147,7 +147,7 @@ class Admin(commands.Cog, name='Админские'):
                 logger_type='success', logger_title='Добавление пользователя в БД',
                 logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
                             f' добавляет **{user}** (`{user.id}`) в базу данных',
-                log_to=BOT_XP_LOGS, client=self.client
+                log_to=BOT_XP_LOGS, client=self.bot
             ).send_log()
 
             return await ctx.send(embed=discord.Embed(
@@ -178,7 +178,7 @@ class Admin(commands.Cog, name='Админские'):
             logger_type='err', logger_title='Удаление пользователя из БД',
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
                         f' удаляет **{user.tag}** (`{user.strID}`) из базы данных',
-            log_to=BOT_XP_LOGS, client=self.client
+            log_to=BOT_XP_LOGS, client=self.bot
         ).send_log()
 
         return await ctx.send(embed=discord.Embed(
@@ -205,7 +205,7 @@ class Admin(commands.Cog, name='Админские'):
             logger_type='err', logger_title='Удаление пользователя из БД',
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
                         f' принудительно удаляет **{user}** из базы данных',
-            log_to=BOT_XP_LOGS, client=self.client
+            log_to=BOT_XP_LOGS, client=self.bot
         ).send_log()
 
         return await ctx.send(embed=discord.Embed(
@@ -234,7 +234,7 @@ class Admin(commands.Cog, name='Админские'):
             logger_type='warn', logger_title='Админское изменение баланса',
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
                         f' сбрасывает баланс для **{user.tag}** (`{user.strID}`)\n\n',
-            log_to=BOT_XP_LOGS, client=self.client
+            log_to=BOT_XP_LOGS, client=self.bot
         ).send_log()
 
         return await ctx.send(

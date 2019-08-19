@@ -154,7 +154,7 @@ class BotOwner(commands.Cog, name='Гадости'):
         """Evaluates a code"""
 
         env = {
-            'client': self.client,
+            'bot': self.client,
             'ctx': ctx,
             'channel': ctx.channel,
             'author': ctx.author,
