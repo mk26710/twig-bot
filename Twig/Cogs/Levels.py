@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from discord.ext import commands
 from Twig.TwigCore import *
 from Twig.Utils.UserConverter import Target
+from Twig.Utils.IgnoreChannels import LEVELS_IGNORED_CHANNELS as IGNORED_CHANNELS
 
 # ====================================
 
@@ -22,6 +23,8 @@ class Levels(commands.Cog, name='Уровни'):
         if message.author.id == self.bot.user.id:
             return
         if message.author.bot is True:
+            return
+        if message.channel.name in IGNORED_CHANNELS:
             return
 
         # Отменяется скрипт, если пользователь лишён возможность получать очки опыта
