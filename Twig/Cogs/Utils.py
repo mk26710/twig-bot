@@ -161,7 +161,7 @@ class Utils(commands.Cog, name='Разное'):
             temp_embed.set_footer(text='Запрашивает %s (%s)' % (ctx.author, ctx.author.id),
                                   icon_url=ctx.author.avatar_url)
             temp_embed.description = temp_embed_desc
-            temp_embed.title = '%s v%s' % (self.client.user.name, short_sha)
+            temp_embed.title = f'{self.client.user.name}'
 
             await ctx.send(embed=temp_embed)
             del uptime, temp_embed, commit, repo, sha, short_sha, guilds_number, users_total, temp_embed_desc
