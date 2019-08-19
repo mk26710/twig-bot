@@ -133,3 +133,4 @@ dmypy.json
 *.json___jb_old___
 *.sqlite
 config/master.json
+config/token.env
