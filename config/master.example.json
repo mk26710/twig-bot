@@ -1,0 +1,10 @@
+{
+  "PREFIX": "?",
+  "MAINTAINERS": [
+    576322791129743361
+  ],
+  "LOG_CHANNEL_ID": "a channel id, where all the stuff should be logged - IT MUST BE AN INTEGER NUMBER, NOT STRING!!!! DELETE QUOTES!!!!",
+  "XP_LOG_CHANNEL_ID": "a channel id, where all the xp related logs should be logged - IT MUST BE AN INTEGER NUMBER, NOT STRING!!!! DELETE QUOTES!!!!",
+  "STATUS": "with XP orbs",
+  "SHOW_NO_PERMS_MESSAGES": true
+}
