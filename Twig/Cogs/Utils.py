@@ -145,8 +145,8 @@ class Utils(commands.Cog, name='Разное'):
             sha = repo.head.object.hexsha
             short_sha = repo.git.rev_parse(sha, short=7)
 
-            temp_embed_desc = ':wave: Привет! Я самый плохой guy на этой planet :sunglasses:\n' + \
-                              'Ладно, шучу! Я бот, который подсчитывает опыт.\n\n' + \
+            temp_embed_desc = f':wave: Привет! Я {self.client.user.name}!\n' + \
+                              'Я бот, который подсчитывает опыт.\n\n' + \
                               '**Немного статистики:**\n' + \
                               '• Считаю опыт на %s серверах\n' % guilds_number + \
                               '• Уже знаю %s человека\n\n' % users_total
@@ -156,7 +156,7 @@ class Utils(commands.Cog, name='Разное'):
             temp_embed.add_field(name='Версия', value='`%s`' % short_sha, inline=True)
             temp_embed.add_field(name='Аптайм', value='`%s`' % str(uptime), inline=True)
             temp_embed.add_field(name='GitHub Репозиторий',
-                                 value="[Перейти по ссылке](https://github.com/defracted/simple-xp-bot)", inline=True)
+                                 value="[Перейти по ссылке](https://github.com/runic-tears/twig-bot)", inline=True)
             temp_embed.add_field(name='Меня создал', value='`%s (%s)`' % (str(creator), str(creator.id)), inline=True)
             temp_embed.set_footer(text='Запрашивает %s (%s)' % (ctx.author, ctx.author.id),
                                   icon_url=ctx.author.avatar_url)
