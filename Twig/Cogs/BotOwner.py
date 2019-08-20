@@ -9,8 +9,8 @@ from Twig.TwigCore import *
 
 class BotOwner(commands.Cog, name='Гадости'):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
         self._last_result = None
         self.sessions = set()
 
@@ -25,7 +25,7 @@ class BotOwner(commands.Cog, name='Гадости'):
     # COMMANDS
     @commands.command()
     async def check_existence(self, ctx, user: discord.User):
-        if user is self.client.user:
+        if user is self.bot.user:
             return await ctx.send(f"Оу. Но создатель решил, что я не могу иметь уровень! Просите. Бип. Буп.")
 
         a = await fetch_data('user', 'user', user.id)
@@ -36,7 +36,7 @@ class BotOwner(commands.Cog, name='Гадости'):
 
     @commands.command()  # GUILD_LIST
     async def guild_list(self, ctx):
-        guilds_ls = self.client.guilds
+        guilds_ls = self.bot.guilds
 
         resulting_txt = "```xl\n"
 
@@ -53,11 +53,11 @@ class BotOwner(commands.Cog, name='Гадости'):
             return await ctx.send("no")
 
         try:
-            guild = self.client.get_guild(int(guild_id))
+            guild = self.bot.get_guild(int(guild_id))
             await guild.leave()
             await ctx.send(f"Я успешно покинул сервер {guild.name} ({guild.id})")
         except Exception as err:
-            log_chan = self.client.get_channel(BOT_MAIN_LOGS)
+            log_chan = self.bot.get_channel(BOT_MAIN_LOGS)
             return await log_chan.send(
                 f"Бип. Буп. Что-то пошло не так. Передайте это моему создателю: "
                 + "```" + str(err) + "```"
@@ -97,7 +97,7 @@ class BotOwner(commands.Cog, name='Гадости'):
             return await message.edit(content=resulting_txt)
 
         for i in range(0, len(data)):
-            user = await self.client.fetch_user(int(data[i]))
+            user = await self.bot.fetch_user(int(data[i]))
             await asyncio.sleep(2)
             # print(f'[FETCH] Processing user {user.name}#{user.discriminator} ({user.id})')
             resulting_txt = resulting_txt + str(user) + ' (' + str(user.id) + ')' + "\n"
@@ -119,7 +119,7 @@ class BotOwner(commands.Cog, name='Гадости'):
 
     @shutdown.command(aliases=['-r'])
     async def r(self, ctx):
-        LOG_CHANNEL = self.client.get_channel(BOT_MAIN_LOGS)
+        LOG_CHANNEL = self.bot.get_channel(BOT_MAIN_LOGS)
         import datetime
         await ctx.send(":gear: Перезагрузка...")
         await LOG_CHANNEL.send(embed=discord.Embed(
@@ -129,12 +129,12 @@ class BotOwner(commands.Cog, name='Гадости'):
                         % (str(ctx.author), str(ctx.author.id)),
             timestamp=datetime.datetime.now()
         ))
-        await self.client.close()
+        await self.bot.close()
         quit()
 
     @shutdown.command(aliases=['-fs'], enabled=False)
     async def fs(self, ctx):
-        LOG_CHANNEL = self.client.get_channel(BOT_MAIN_LOGS)
+        LOG_CHANNEL = self.bot.get_channel(BOT_MAIN_LOGS)
         import datetime
         await ctx.send(":gear: Завершение работы...")
         await LOG_CHANNEL.send(embed=discord.Embed(
@@ -144,8 +144,8 @@ class BotOwner(commands.Cog, name='Гадости'):
                         % (str(ctx.author), str(ctx.author.id)),
             timestamp=datetime.datetime.now()
         ))
-        await self.client.close()
-        os.system("service badguy stop")
+        await self.bot.close()
+        os.system("service twig stop")
         quit()
 
     @commands.command(pass_context=True, hidden=True, name='eval')
@@ -154,7 +154,7 @@ class BotOwner(commands.Cog, name='Гадости'):
         """Evaluates a code"""
 
         env = {
-            'bot': self.client,
+            'bot': self.bot,
             'ctx': ctx,
             'channel': ctx.channel,
             'author': ctx.author,

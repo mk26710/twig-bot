@@ -15,10 +15,10 @@ class MyHelpCommand(commands.DefaultHelpCommand):
 
 
 class CustomHelp(commands.Cog, name='Помощь'):
-    def __init__(self, client):
-        self._original_help_command = client.help_command
-        client.help_command = MyHelpCommand(indent=1, no_category='Без Категории')
-        client.help_command.cog = self
+    def __init__(self, bot):
+        self._original_help_command = bot.help_command
+        bot.help_command = MyHelpCommand(indent=1, no_category='Без Категории')
+        bot.help_command.cog = self
 
     # def cog_unload(self):
     #     self.bot.help_command = self._original_help_command
