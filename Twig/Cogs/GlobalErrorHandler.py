@@ -31,6 +31,21 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
         if isinstance(error, commands.CommandNotFound):
             return await ctx.send('Что это вообще за команда? Я такую не знаю :(')
 
+        elif isinstance(error, commands.DisabledCommand):
+            return await ctx.send(f'Команда `{ctx.command}` отключена.')
+
+        elif isinstance(error, commands.MissingPermissions):
+            if is_no_perm_notifications_enabled is True:
+                return await ctx.send(f':lock: У вас нет доступа к команде `{ctx.command}`')
+            else:
+                return
+
+        elif isinstance(error, commands.CheckFailure):
+            if is_no_perm_notifications_enabled is True:
+                return await ctx.send(f':lock: У вас нет доступа к команде `{ctx.command}`')
+            else:
+                return
+
         elif isinstance(error, commands.MissingRequiredArgument):
             return await ctx.send(embed=discord.Embed(
                 title=':warning: Операция прервана!',
@@ -39,9 +54,6 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
             ).set_footer(
                 text='Узнать подробнее о команде: %shelp %s' % (BOT_PREFIX, ctx.command)
             ))
-
-        elif isinstance(error, commands.DisabledCommand):
-            return await ctx.send(f'Команда `{ctx.command}` отключена.')
 
         elif isinstance(error, commands.NoPrivateMessage):
             try:
@@ -56,19 +68,7 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
             except:
                 pass
 
-        elif isinstance(error, commands.MissingPermissions):
-            if is_no_perm_notifications_enabled is True:
-                return await ctx.send(f':lock: У вас нет доступа к команде `{ctx.command}`')
-            else:
-                return
-
-        elif isinstance(error, commands.CheckFailure):
-            if is_no_perm_notifications_enabled is True:
-                return await ctx.send(f':lock: У вас нет доступа к команде `{ctx.command}`')
-            else:
-                return
-
-        # Можно также указать конкретную команду, и её обработчик
+        # Обрвботчики для конкретных случаев
         elif isinstance(error, commands.BadArgument):
             if ctx.command.qualified_name == 'userinfo':
                 return await ctx.send(embed=discord.Embed(
@@ -108,7 +108,7 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
                 )
                 )
 
-        # Ошибки для конкретных команд пол кодам ошибки
+        # Ошибки для конкретных команд по кодам ошибки (404, 403 и т.п.)
         elif isinstance(error, discord.errors.HTTPException):
             if ctx.command.qualified_name == 'voicedemo':
                 if error.code == 50035:
