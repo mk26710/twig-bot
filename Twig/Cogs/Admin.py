@@ -17,6 +17,19 @@ class Admin(commands.Cog, name='Админские'):
     async def cog_check(self, ctx):
         return await ctx.bot.is_owner(ctx.author) or ctx.author.id in BOT_MAINTAINERS
 
+    @commands.command(name='what_shard', aliases=['get_shard', 'find_shard', 'find_me', 'findme'], brief='Необходимо для выявления проблем', hidden=True)
+    @commands.cooldown(1, 60, type=BucketType.member)
+    async def _what_shard(self, ctx):
+        guild = ctx.guild
+        guilds_shard = guild.shard_id
+        return await ctx.send(embed=discord.Embed(
+            colour=0xFFFFFF,
+            description=f':office: Идентификатор данного сервера: **#`{guild.id}`**\n'
+                        f':diamond_shape_with_a_dot_inside: Номер шарда для данного сервера: **#`{guilds_shard}`**'
+        ).set_author(
+            name=guild.name, icon_url=guild.icon_url
+        ))
+
     # ===== XP MANAGEMENT AREA ======
 
     @commands.group()
