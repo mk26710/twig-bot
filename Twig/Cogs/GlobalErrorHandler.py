@@ -123,7 +123,7 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
                     )
                     )
 
-            if ctx.command.qualified_name == 'role_color':
+            elif ctx.command.qualified_name == 'role_color':
                 if error.code == 50013:
                     return await ctx.send(embed=
                     discord.Embed(
