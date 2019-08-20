@@ -93,6 +93,7 @@ class Shop(commands.Cog, name='Магазинчик'):
             colour=SECONDARY_COLOR
         ))
 
+        # Проверка наличия пользователя в БД
         temp = await fetch_data('user', 'user', ctx.author.id)
         if temp is None:
             del temp
@@ -101,6 +102,7 @@ class Shop(commands.Cog, name='Магазинчик'):
                 colour=ERROR_COLOR
             ))
 
+        # Подключение файла с данными об уровнях
         try:
             with open('config/' + str(ctx.guild.id) + '/levels.json') as r:
                 levels = json.load(r)
@@ -114,6 +116,7 @@ class Shop(commands.Cog, name='Магазинчик'):
         shop_id = int(shop_id)
         author = ctx.author
 
+        # Проверки, если ID товара не существует (меньше нкля и больше максимума)
         if shop_id > len(levels) or shop_id < 1:
             return await message.edit(embed=discord.Embed(
                 title=':x: Ошибка!',
@@ -121,21 +124,32 @@ class Shop(commands.Cog, name='Магазинчик'):
                 colour=ERROR_COLOR
             ))
 
+        # Основной цикл проверок
+        # level - элемент списка уровней, parameters - одэлемент списка уровней
         for level, parameters in levels.items():
+            # Обозначение стандартных переменных (получают данные из списка по циклу)
+            # ID товара
             shop__id = parameters['shop_id']
+            # Роль
             role = discord.utils.get(ctx.guild.roles, id=parameters['role'])
+            # Стоимость покупки
             price = parameters['price']
 
+            # Если ID товара из цикла совпадает с аргументом команды
             if int(shop_id) == shop__id:
+                # Получение данных предшествующей роли
                 for prev_level, prev_params in levels.items():
                     prev_shop_id = prev_params['shop_id']
 
+                    # Если ID товара = 1, то не выполняется проверка на наличие предыдущей роли
                     if shop_id == 1:
                         pass
                     elif prev_shop_id == (shop_id - 1):
+                        # Переменные для предшествующей роли
                         prev_role = discord.utils.get(ctx.guild.roles, id=prev_params['role'])
                         prev_price = prev_params['price']
 
+                        # Если предыдущей роли у пользователя нет
                         if prev_role not in author.roles:
                             return await message.edit(embed=discord.Embed(
                                 colour=ERROR_COLOR,
@@ -143,7 +157,9 @@ class Shop(commands.Cog, name='Магазинчик'):
                                 description=f'Чтобы купить [#{shop__id}] {role.mention}, вы должны сначала купить [#{prev_shop_id}] {prev_role.mention}.'
                             ))
 
+                # Получение текущего баланса пользователя
                 author_balance = await fetch_data('xp', 'user', author.id)
+                # Если на балансе недостаточно очков
                 if author_balance < price:
                     price_diff = price - author_balance
                     del author_balance
@@ -153,6 +169,7 @@ class Shop(commands.Cog, name='Магазинчик'):
                         description=f'Вам не хватает {price_diff} очков опыта, чтобы купить эту роль.'
                     ))
 
+                # Если цель покупки уже есть
                 elif role in author.roles:
                     del author_balance
                     return await message.edit(embed=discord.Embed(
@@ -161,10 +178,12 @@ class Shop(commands.Cog, name='Магазинчик'):
                         description='У вас уже есть эта роль!'
                     ))
 
+                # Добавляет роль, при прохождении всех проверок
                 await author.add_roles(role)
                 author_new_balance = int(author_balance) - int(price)
                 await update_data('xp', author_new_balance, 'user', author.id)
 
+                # Логирование покупки
                 log_chan = self.bot.get_channel(BOT_XP_LOGS)
                 await log_chan.send(embed=discord.Embed(
                     timestamp=datetime.datetime.utcnow(),
@@ -181,6 +200,7 @@ class Shop(commands.Cog, name='Магазинчик'):
                     name='Баланс после покупки', value=f'**{author_new_balance}** опыта'
                 ))
 
+                # Информирование пользователя об успешной покупке
                 return await message.edit(embed=discord.Embed(
                     colour=role.color,
                     title='Наслаждайтесь!',
