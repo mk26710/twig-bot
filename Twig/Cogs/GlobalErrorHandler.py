@@ -91,6 +91,13 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
                     description='Я не знаю такого пользователя.'
                 ))
 
+            elif ctx.command.qualified_name == 'role_color':
+                return await ctx.send(embed=discord.Embed(
+                    title=':x: Произошла ошибка!',
+                    colour=ERROR_COLOR,
+                    description='Неизвестная роль.'
+                ))
+
         elif isinstance(error, discord.errors.NotFound):
             if ctx.command.qualified_name == 'voicedemo':
                 return await ctx.send(embed=
@@ -101,6 +108,7 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
                 )
                 )
 
+        # Ошибки для конкретных команд пол кодам ошибки
         elif isinstance(error, discord.errors.HTTPException):
             if ctx.command.qualified_name == 'voicedemo':
                 if error.code == 50035:
@@ -112,6 +120,16 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
                     ).add_field(
                         name='Дополнительно',
                         value='ID канала не может быть больше значения **%s**' % re.findall(r'\d+', error.text)[0]
+                    )
+                    )
+
+            if ctx.command.qualified_name == 'role_color':
+                if error.code == 50013:
+                    return await ctx.send(embed=
+                    discord.Embed(
+                        title=':x: Ошибка!',
+                        description='Недостаточно прав.',
+                        colour=ERROR_COLOR
                     )
                     )
 

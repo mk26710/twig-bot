@@ -23,6 +23,30 @@ class BotOwner(commands.Cog, name='Гадости'):
         return content.strip('` \n')
 
     # COMMANDS
+    @commands.command(name='role_color', brief='Изменяет цвет роли')
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles=True)
+    async def _role_color(self, ctx, r: discord.Role, c: discord.Color = None):
+        if c is None:
+            current_color = r.colour
+
+            return await ctx.send(embed=discord.Embed(
+                title=f'Цвет {r.name} ({r.id})',
+                description=f'HEX: `{str(current_color)}`',
+                colour=current_color
+            ))
+
+        await r.edit(colour=c)
+
+        r_color_embed = discord.Embed(
+            colour=c, description=f"Вы успешно изменили цвет для роли **{r}**!",
+            reason=f"Изменено пользователем {ctx.author.id}")
+        r_color_embed.set_footer(
+            text=f"{ctx.author.name}#{ctx.author.discriminator} ({ctx.author.id})",
+            icon_url=ctx.author.avatar_url)
+
+        await ctx.send(embed=r_color_embed)
+
     @commands.command()
     async def check_existence(self, ctx, user: discord.User):
         if user is self.bot.user:
