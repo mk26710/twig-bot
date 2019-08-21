@@ -36,9 +36,13 @@ class Utils(commands.Cog, name='Разное'):
         message = await ctx.send(":ping_pong:")
         t2 = time.perf_counter()
         rest = round((t2 - t1) * 1000)
-        latency = round(self.bot.latency * 1000, 2)
-        await message.edit(content=f":ping_pong: Задержка отправки запросов составляет **{rest}мс** | " +
-                                   f"Задержка «сердцебияния» составляет **{latency}мс**")
+        latency = round(self.bot.latency * 1000)
+
+        return await message.edit(content='', embed=discord.Embed(
+            colour=discord.Colour.blue(),
+            description=f":heartbeat: HEARTBEAT: **{latency}мс** \n" +
+                        f":incoming_envelope: REST: **{rest}мс**"
+        ))
 
     @commands.command(name="voicedemo", aliases=['voiceshare', 'vd', 'vcss', 'vcdemo'],
                       brief='Получить ссылку для включения демонстрации экрана')
