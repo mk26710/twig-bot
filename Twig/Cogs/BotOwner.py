@@ -58,35 +58,6 @@ class BotOwner(commands.Cog, name='Гадости'):
         else:
             await ctx.send(':white_check_mark: %s (`%s`) присутствует в базе данных' % (user, user.id))
 
-    @commands.command()  # GUILD_LIST
-    async def guild_list(self, ctx):
-        guilds_ls = self.bot.guilds
-
-        resulting_txt = "```xl\n"
-
-        for i in range(len(guilds_ls)):
-            resulting_txt = resulting_txt + "\n" + str(guilds_ls[i]) + " (" + str(guilds_ls[i].id) + ")"
-
-        resulting_txt += "```"
-
-        await ctx.send(resulting_txt)
-
-    @commands.command()
-    async def guild_leave(self, ctx, guild_id):
-        if ctx.author.id not in BOT_MAINTAINERS:
-            return await ctx.send("no")
-
-        try:
-            guild = self.bot.get_guild(int(guild_id))
-            await guild.leave()
-            await ctx.send(f"Я успешно покинул сервер {guild.name} ({guild.id})")
-        except Exception as err:
-            log_chan = self.bot.get_channel(BOT_MAIN_LOGS)
-            return await log_chan.send(
-                f"Бип. Буп. Что-то пошло не так. Передайте это моему создателю: "
-                + "```" + str(err) + "```"
-            )
-
     @commands.command(aliases=['update'])
     async def pull(self, ctx):
         try:
@@ -135,43 +106,6 @@ class BotOwner(commands.Cog, name='Гадости'):
         await asyncio.sleep(0.05)
         return await message.edit(content=resulting_txt)
 
-    @commands.group()
-    async def shutdown(self, ctx):  # SHUTDOWN'S PYTHON PROCESS
-        if ctx.invoked_subcommand is None:
-            await ctx.send('Укажите флаг команды.' +
-                           '\n**Использование**: `%sshutdown [-r | -fs]`' % BOT_PREFIX)
-
-    @shutdown.command(aliases=['-r'])
-    async def r(self, ctx):
-        LOG_CHANNEL = self.bot.get_channel(BOT_MAIN_LOGS)
-        import datetime
-        await ctx.send(":gear: Перезагрузка...")
-        await LOG_CHANNEL.send(embed=discord.Embed(
-            colour=0x9B59B6,
-            title='Перезагрузка',
-            description='**%s** (`%s`) перезагружает бота...'
-                        % (str(ctx.author), str(ctx.author.id)),
-            timestamp=datetime.datetime.now()
-        ))
-        await self.bot.close()
-        quit()
-
-    @shutdown.command(aliases=['-fs'], enabled=False)
-    async def fs(self, ctx):
-        LOG_CHANNEL = self.bot.get_channel(BOT_MAIN_LOGS)
-        import datetime
-        await ctx.send(":gear: Завершение работы...")
-        await LOG_CHANNEL.send(embed=discord.Embed(
-            colour=0xF55E5E,
-            title='Завершение работы',
-            description='**%s** (`%s`) выключает бота...'
-                        % (str(ctx.author), str(ctx.author.id)),
-            timestamp=datetime.datetime.now()
-        ))
-        await self.bot.close()
-        os.system("service twig stop")
-        quit()
-
     @commands.command(pass_context=True, hidden=True, name='eval')
     @commands.is_owner()
     async def _eval(self, ctx, *, body: str):
@@ -219,6 +153,80 @@ class BotOwner(commands.Cog, name='Гадости'):
             else:
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
+
+    # ==== GUILD COMMANDS ==== #
+
+    @commands.group(name='guild', brief='Манипуляции с серверами, где я есть')
+    async def _guild(self, ctx):
+        if ctx.invoked_subcommand is None:
+            return await ctx.send('Вы не указали субкоманду (`leave`, `list`)')
+
+    @_guild.command(name='list')
+    async def _guild_list(self, ctx):
+        guilds_ls = self.bot.guilds
+
+        resulting_txt = "```xl\n"
+
+        for i in range(len(guilds_ls)):
+            resulting_txt = resulting_txt + "\n" + str(guilds_ls[i]) + " (" + str(guilds_ls[i].id) + ")"
+
+        resulting_txt += "```"
+        del guilds_ls
+        return await ctx.send(resulting_txt)
+
+    @_guild.command(name='leave')
+    async def _guild_leave(self, ctx, guild_id):
+        try:
+            guild = self.bot.get_guild(int(guild_id))
+            await guild.leave()
+            await ctx.send(f"Я успешно покинул сервер {guild.name} ({guild.id})")
+        except Exception as err:
+            log_chan = self.bot.get_channel(BOT_MAIN_LOGS)
+            return await log_chan.send(
+                f"Бип. Буп. Что-то пошло не так. Передайте это моему создателю: "
+                + "```" + str(err) + "```"
+            )
+
+    @commands.group()
+    async def shutdown(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send('Укажите флаг команды.' +
+                           '\n**Использование**: `%sshutdown [-r | -fs]`' % BOT_PREFIX)
+
+    # ==== SHUTDOWN COMMANDS ==== #
+
+    @shutdown.command(aliases=['-r'])
+    async def r(self, ctx):
+        LOG_CHANNEL = self.bot.get_channel(BOT_MAIN_LOGS)
+        import datetime
+        await ctx.send(":gear: Перезагрузка...")
+        await LOG_CHANNEL.send(embed=discord.Embed(
+            colour=0x9B59B6,
+            title='Перезагрузка',
+            description='**%s** (`%s`) перезагружает бота...'
+                        % (str(ctx.author), str(ctx.author.id)),
+            timestamp=datetime.datetime.now()
+        ))
+        await self.bot.close()
+        quit()
+
+    @shutdown.command(aliases=['-fs'], enabled=False)
+    async def fs(self, ctx):
+        LOG_CHANNEL = self.bot.get_channel(BOT_MAIN_LOGS)
+        import datetime
+        await ctx.send(":gear: Завершение работы...")
+        await LOG_CHANNEL.send(embed=discord.Embed(
+            colour=0xF55E5E,
+            title='Завершение работы',
+            description='**%s** (`%s`) выключает бота...'
+                        % (str(ctx.author), str(ctx.author.id)),
+            timestamp=datetime.datetime.now()
+        ))
+        await self.bot.close()
+        os.system("service twig stop")
+        quit()
+
+    # ==== STATUS COMMANDS ==== #
 
     @commands.group(name='status')
     async def _status(self, ctx):
