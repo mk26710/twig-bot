@@ -6,9 +6,9 @@ class TheLibraryExclusives(commands.Cog, name="Дополнительно"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="test_test", enabled=False, hidden=True)
+    @commands.command(name="fact", hidden=True)
     async def _test_test_(self, ctx):
-        await ctx.send('Tested')
+        return await ctx.send('Facts.')
 
 
 def setup(bot):

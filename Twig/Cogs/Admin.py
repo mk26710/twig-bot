@@ -137,7 +137,7 @@ class Admin(commands.Cog, name='Админские'):
                 description=f"Баланс **{user.tag}** (`{user.strID}`) изменён на **{new_xp} опыта**",
                 colour=SUCCESS_COLOR
             ).set_footer(
-                text=f'Запрошено пользователем {user.tag}')
+                text=f'Запрошено пользователем {ctx.author.name}')
         )
 
     @axp.command()

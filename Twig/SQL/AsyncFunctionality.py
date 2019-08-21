@@ -2,27 +2,27 @@ import sqlite3
 import time
 import aiosqlite
 
-DEFAULT_DB_FILENAME = 'twig-and-xp.sqlite'
+DEFAULT_DB_FILENAME = 'twig-and-xp'
 
 
 async def connect_sqlite(filename):
-    return await aiosqlite.connect(f'./Twig/SQL/db/{str(filename)}')
+    return await aiosqlite.connect(f'./Twig/SQL/db/{str(filename)}.sqlite')
 
 
 # Инициализатор БД
-async def sqlite_data():
-    con = await aiosqlite.connect(f'./Twig/SQL/db/{DEFAULT_DB_FILENAME}')
+async def sqlite_data(db=DEFAULT_DB_FILENAME):
+    con = await aiosqlite.connect(f'./Twig/SQL/db/{db}.sqlite')
 
     await con.execute("CREATE TABLE IF NOT EXISTS data(user INTEGER, xp INTEGER, lastTimeEdited INTEGER)")
     await con.commit()
 
     await con.close()
-    print('[CORE:SQL] Data table initialized initialized!')
+    print(f'[CORE:SQL] Database Twig/SQL/db/{db}.sqlite initialized!')
 
 
 # Получить топ 5 лидеров по XP
-async def fetch_top_5():
-    con = await connect_sqlite(DEFAULT_DB_FILENAME)
+async def fetch_top_5(db=DEFAULT_DB_FILENAME):
+    con = await connect_sqlite(db)
 
     cur = await con.execute('SELECT user, xp FROM data ORDER BY xp DESC Limit 5')
     data = await cur.fetchall()
@@ -42,8 +42,8 @@ async def fetch_top_5():
 
 
 # Получить список всех пользователей в БД
-async def fetch_whole_table():
-    con = await connect_sqlite(DEFAULT_DB_FILENAME)
+async def fetch_whole_table(db=DEFAULT_DB_FILENAME):
+    con = await connect_sqlite(db)
 
     cur = await con.execute("SELECT user FROM data")
     data = await cur.fetchall()
@@ -62,8 +62,8 @@ async def fetch_whole_table():
 
 
 # Поиск и получение данных из БД
-async def fetch_data(fetch_this, where_is, where_val):
-    con = await connect_sqlite(DEFAULT_DB_FILENAME)
+async def fetch_data(fetch_this, where_is, where_val, db=DEFAULT_DB_FILENAME):
+    con = await connect_sqlite(db)
 
     cur = await con.execute(f"SELECT %s FROM data where %s=%s" % (fetch_this, where_is, where_val))
     data = await cur.fetchall()
@@ -86,8 +86,8 @@ async def fetch_data(fetch_this, where_is, where_val):
 
 
 # Обновление каких-либо параметров в БД
-async def update_data(update_this, update_to, where_is, where_val):
-    con = await connect_sqlite(DEFAULT_DB_FILENAME)
+async def update_data(update_this, update_to, where_is, where_val, db=DEFAULT_DB_FILENAME):
+    con = await connect_sqlite(db)
 
     cur = await con.execute(f"UPDATE data SET %s=%s WHERE %s=%s" % (update_this, update_to, where_is, where_val))
 
@@ -101,8 +101,8 @@ async def update_data(update_this, update_to, where_is, where_val):
 
 
 # Добавление новых пользователей в БД
-async def add_user_into_data(user_id):
-    con = await connect_sqlite(DEFAULT_DB_FILENAME)
+async def add_user_into_data(user_id, db=DEFAULT_DB_FILENAME):
+    con = await connect_sqlite(db)
 
     called_at = int(time.time() - 300)
     cur = await con.execute("INSERT INTO data VALUES(%s, 0, %s)" % (user_id, called_at))
@@ -114,8 +114,8 @@ async def add_user_into_data(user_id):
 
 
 # Удаляет пользователя из БД
-async def del_user_form_data(user_id):
-    con = await connect_sqlite(DEFAULT_DB_FILENAME)
+async def del_user_form_data(user_id, db=DEFAULT_DB_FILENAME):
+    con = await connect_sqlite(db)
 
     cur = await con.execute("DELETE FROM data WHERE user=%s" % user_id)
     await con.commit()
@@ -123,3 +123,8 @@ async def del_user_form_data(user_id):
     await cur.close()
     await con.close()
     del con, cur
+
+
+# Функции для нестандартных .sqlite баз
+
+# soon™
