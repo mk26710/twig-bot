@@ -260,7 +260,7 @@ class BotOwner(commands.Cog, name='Гадости'):
                                        type=status_type)
         await self.bot.change_presence(activity=playing_now)
 
-        return await ctx.send(f'Статус успешно восстановлен!')
+        return await ctx.send(f'Статус успешно присвоен!')
 
 
 def setup(client):
