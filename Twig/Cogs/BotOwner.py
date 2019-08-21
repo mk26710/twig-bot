@@ -111,7 +111,7 @@ class BotOwner(commands.Cog, name='Гадости'):
         resulting_txt = "Список пользователей в БД: ```yaml\n"
 
         approx_fetch_time = len(data) * 2
-        approx_fetch_time = round((approx_fetch_time/60), 2)
+        approx_fetch_time = round((approx_fetch_time / 60), 2)
 
         await message.edit(content=":repeat: Вам придётся немного подождать...\n" +
                                    f":hourglass: Процесс может занять **{approx_fetch_time}** мин.")
@@ -219,6 +219,40 @@ class BotOwner(commands.Cog, name='Гадости'):
             else:
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
+
+    @commands.group(name='status')
+    async def _status(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send("Вы не указали субкоманду, либо вы указали неверную субкоманду.")
+
+    @_status.command(name='reset')
+    async def _status_reset(self, ctx):
+        playing_now = discord.Activity(name=BOT_PLAYING_GAME_NAME + f' | {BOT_PREFIX}help',
+                                       type=discord.ActivityType.playing)
+        await self.bot.change_presence(activity=playing_now)
+
+        return await ctx.send(f'Статус успешно восстановлен!')
+
+    @_status.command(name='set')
+    async def _status_set(self, ctx, status_type, *, text):
+        if (status_type == 'playing') or (status_type == '1'):
+            status_type = discord.ActivityType.playing
+        elif (status_type == 'watching') or (status_type == '2'):
+            status_type = discord.ActivityType.watching
+        elif (status_type == 'listening') or (status_type == '3'):
+            status_type = discord.ActivityType.listening
+        # Немного сломано, нужно понять в чём проблема.
+        elif (status_type == 'streaming') or (status_type == '4'):
+            status_type = discord.ActivityType.streaming
+        # Если в качестве типа статуса было указано что-то странное
+        else:
+            status_type = discord.ActivityType.playing
+
+        playing_now = discord.Activity(name=str(text),
+                                       type=status_type)
+        await self.bot.change_presence(activity=playing_now)
+
+        return await ctx.send(f'Статус успешно восстановлен!')
 
 
 def setup(client):
