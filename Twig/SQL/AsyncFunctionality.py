@@ -97,8 +97,6 @@ async def update_data(update_this, update_to, where_is, where_val, db=DEFAULT_DB
     await con.close()
     del con, cur
 
-    return
-
 
 # Добавление новых пользователей в БД
 async def add_user_into_data(user_id, db=DEFAULT_DB_FILENAME):
@@ -106,8 +104,8 @@ async def add_user_into_data(user_id, db=DEFAULT_DB_FILENAME):
 
     called_at = int(time.time() - 300)
     cur = await con.execute("INSERT INTO data VALUES(%s, 0, %s)" % (user_id, called_at))
-    await con.commit()
 
+    await con.commit()
     await cur.close()
     await con.close()
     del con, cur

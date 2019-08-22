@@ -53,6 +53,7 @@ class Shop(commands.Cog, name='Магазинчик'):
 
         temp_embed.description = description_data
         await message.edit(embed=temp_embed)
+        r.close()
 
     @commands.group(name='shop')
     @commands.guild_only()
@@ -200,6 +201,8 @@ class Shop(commands.Cog, name='Магазинчик'):
                     name='Баланс после покупки', value=f'**{author_new_balance}** опыта'
                 ))
 
+                # Закрываем файл
+                r.close()
                 # Информирование пользователя об успешной покупке
                 return await message.edit(embed=discord.Embed(
                     colour=role.color,
