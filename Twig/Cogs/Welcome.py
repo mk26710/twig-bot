@@ -1,5 +1,4 @@
 from discord.ext import commands
-import discord
 from Twig.TwigCore import *
 from Twig.Utils.Logger import Logger
 

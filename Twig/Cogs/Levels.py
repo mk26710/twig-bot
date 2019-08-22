@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from discord.ext import commands
 from Twig.TwigCore import *
 from Twig.Utils.UserConverter import Target
@@ -42,8 +40,7 @@ class Levels(commands.Cog, name='Уровни'):
         a = await fetch_data('xp', 'user', user_id)
         if a is None:
             await add_user_into_data(user_id)
-            temp_embed.description = f'Пользователь не был найден ' + \
-                                     'в базе данных, но успешно внесён.'
+            temp_embed.description = f'Пользователь не был найден в базе данных, но успешно внесён.'
         else:
             pass
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from discord.ext import commands
 from Twig.TwigCore import *
 from Twig.Utils.Logger import Logger
@@ -7,7 +5,6 @@ from Twig.Utils.UserConverter import Target
 
 
 # ====================================
-
 
 class Admin(commands.Cog, name='Админские'):
 
@@ -25,7 +22,7 @@ class Admin(commands.Cog, name='Админские'):
         return await ctx.send(embed=discord.Embed(
             colour=0xFFFFFF,
             description=f':office: Идентификатор данного сервера: **#`{guild.id}`**\n'
-                        f':diamond_shape_with_a_dot_inside: Номер шарда для данного сервера: **#`{guilds_shard}`**'
+                        f':diamond_shape_with_a_dot_inside: Номер кластера для данного сервера: **#`{guilds_shard}`**'
         ).set_author(
             name=guild.name, icon_url=guild.icon_url
         ))
@@ -35,7 +32,7 @@ class Admin(commands.Cog, name='Админские'):
     @commands.group()
     async def axp(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.send("Вы не указали субкоманду, либо вы указали неверную субкоманду.")
+            return await ctx.send("Вы не указали субкоманду, либо вы указали неверную субкоманду.")
 
     @axp.command()
     async def add(self, ctx, user: discord.User, xp):

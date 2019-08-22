@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from discord.ext import commands
 from Twig.TwigCore import *
 from Twig.Utils.UserConverter import Target
-from Twig.Utils.HugMessages import HugMessages, do_hug
+from Twig.Utils.HugMessages import do_hug
 
 
 # ====================================

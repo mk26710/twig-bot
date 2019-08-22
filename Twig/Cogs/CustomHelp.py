@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-# ====================================
 from discord.ext import commands
 
 
 # ====================================
-
 
 class MyHelpCommand(commands.DefaultHelpCommand):
     def get_ending_note(self):

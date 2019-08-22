@@ -17,7 +17,7 @@ async def sqlite_data(db=DEFAULT_DB_FILENAME):
     await con.commit()
 
     await con.close()
-    print(f'[CORE:SQL] Database Twig/SQL/db/{db}.sqlite initialized!')
+    return print(f'[CORE:SQL] Database Twig/SQL/db/{db}.sqlite initialized!')
 
 
 # Получить топ 5 лидеров по XP

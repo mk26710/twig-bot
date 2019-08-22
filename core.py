@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from discord.ext import commands
 from Twig.TwigCore import *
 
@@ -18,31 +16,26 @@ logging.basicConfig(level=logging.INFO)
 
 # ====================================
 
-def cogs_loader():
-    for filename in os.listdir('./Twig/Cogs'):  # LOADING COGS
+async def bot_initializer():
+    # Инициализация модулей
+    for filename in os.listdir('./Twig/Cogs'):
         if filename.endswith('.py'):
             bot.load_extension(f'Twig.Cogs.{filename[:-3]}')
             print(f'[CORE:COGS] {filename[:-3]} ready!')
 
-
-cogs_loader()
+    # Инициализация базы данных
+    await sqlite_data()
 
 
 @bot.event
 async def on_ready():
-    # Инициализация базы данных
-    await sqlite_data()
-
+    log_chan = bot.get_channel(BOT_MAIN_LOGS)
     try:
-        log_chan = bot.get_channel(BOT_MAIN_LOGS)
-
-        playing_now = discord.Activity(name=BOT_PLAYING_GAME_NAME + ' | %shelp' % BOT_PREFIX,
+        playing_now = discord.Activity(name=BOT_PLAYING_GAME_NAME + f' | {BOT_PREFIX}help',
                                        type=discord.ActivityType.playing)
-
-        message = await log_chan.send(":arrows_counterclockwise: " +
-                                      "Почти проснулся, ещё пять минуточек, ну...")
+        message = await log_chan.send(":arrows_counterclockwise: Почти проснулся, ещё пять минуточек, ну...")
+        await bot_initializer()
         await bot.change_presence(activity=playing_now)
-
         return await message.edit(content=":white_check_mark: " + "Всё, к труду и обороне готов!")
     except Exception as err:
         return print("It's alive! \nAlso, an error has happened: \n" + str(err))
@@ -51,7 +44,6 @@ async def on_ready():
 @bot.event
 async def on_guild_join(guild):
     log_chan = bot.get_channel(BOT_MAIN_LOGS)
-
     try:
         json_file = open('./config/whitelist.json', "r", encoding='utf-8')
         whitelist = json.load(json_file)
@@ -73,7 +65,6 @@ async def on_guild_join(guild):
 @bot.event
 async def on_guild_remove(guild):
     log_chan = bot.get_channel(BOT_MAIN_LOGS)
-
     try:
         return await log_chan.send(f':outbox_tray: Я покинул сервер {guild.name} ({guild.id})')
     except Exception as err:
