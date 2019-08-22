@@ -23,7 +23,7 @@ class BotOwner(commands.Cog, name='Гадости'):
         return content.strip('` \n')
 
     # COMMANDS
-    @commands.command(name='mem', aliases=['memory'])
+    @commands.command(name='mem', aliases=['memory'], enabled=False)
     async def _mem(self, ctx):
         process = psutil.Process(os.getpid())
         return await ctx.send(embed=discord.Embed(
