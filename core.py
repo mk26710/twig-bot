@@ -5,7 +5,7 @@ from Twig.TwigCore import *
 
 # ====================================
 
-bot = commands.AutoShardedBot(command_prefix=BOT_PREFIX)
+bot = commands.AutoShardedBot(command_prefix=commands.when_mentioned_or(BOT_PREFIX))
 
 logging.basicConfig(level=logging.INFO)
 
