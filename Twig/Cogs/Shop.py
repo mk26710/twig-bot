@@ -6,12 +6,6 @@ from Twig.TwigCore import *
 
 # ====================================
 
-
-# MAINTAINER CHECKER
-def check_if_maintainer(ctx):
-    return ctx.author.id in BOT_MAINTAINERS
-
-
 class Shop(commands.Cog, name='Магазинчик'):
 
     def __init__(self, bot):
