@@ -20,6 +20,7 @@ import re
 import textwrap
 import traceback
 import random
+import psutil
 
 env_path = pathlib.Path('./config/token.env')
 load_dotenv(dotenv_path=env_path)

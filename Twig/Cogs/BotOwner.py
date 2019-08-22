@@ -23,9 +23,17 @@ class BotOwner(commands.Cog, name='Гадости'):
         return content.strip('` \n')
 
     # COMMANDS
+    @commands.command(name='mem', aliases=['memory'])
+    async def _mem(self, ctx):
+        process = psutil.Process(os.getpid())
+        return await ctx.send(embed=discord.Embed(
+            colour=0x55acee,
+            description=f':rosette: ИСПОЛЬЗОВАНИЕ ОЗУ: **{round(process.memory_percent() * 100, 1)} МБ**'
+        )
+        )
+
     @commands.command(name='role_color', brief='Изменяет цвет роли')
     @commands.guild_only()
-    @commands.has_permissions(manage_roles=True)
     async def _role_color(self, ctx, r: discord.Role, c: discord.Color = None):
         if c is None:
             current_color = r.colour
