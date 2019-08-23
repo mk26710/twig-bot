@@ -16,13 +16,16 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
         if hasattr(ctx.command, 'on_error'):
             return
 
-        # ignored = commands.UserInputError
         log_channel = self.bot.get_channel(BOT_MAIN_LOGS)
         error = getattr(error, 'original', error)
 
         # Все типы ошибок, внутри ignored - будут игнорироваться обработчиком
-        # if isinstance(error, ignored):
-        #    return
+        is_ignore_enabled = False
+        ignored = commands.UserInputError
+        
+        if is_ignore_enabled:
+            if isinstance(error, ignored):
+               return
 
         # ==== DISCORD PYTHON ERRORS ====
 
