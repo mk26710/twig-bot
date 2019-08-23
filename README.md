@@ -1,6 +1,8 @@
 [![Discord](https://discordapp.com/api/guilds/612406451109101599/embed.png?style=banner2)](https://discord.gg/QM7mZ5V)
 
 # Twig Bot
+[![BCH compliance](https://bettercodehub.com/edge/badge/runic-tears/twig-bot?branch=master)](https://bettercodehub.com/)
+
 Бот, созданный специально для Discord-сервера «The Library»
 
 ## Возможности
