@@ -1,4 +1,4 @@
-# Twig Bot ![](https://img.shields.io/badge/python-3.6+-blue.svg)[![License](https://img.shields.io/github/license/runic-tears/twig-bot)](./LICENSE)
+# Twig Bot ![](https://img.shields.io/badge/python-3.6+-blue.svg) [![License](https://img.shields.io/github/license/runic-tears/twig-bot)](./LICENSE)
 
 Бот, созданный специально для Discord-сервера «The Library»
 
