@@ -22,10 +22,10 @@ class CommandErrorHandler(commands.Cog, name='Обработка ошибок'):
         # Все типы ошибок, внутри ignored - будут игнорироваться обработчиком
         is_ignore_enabled = False
         ignored = commands.UserInputError
-        
+
         if is_ignore_enabled:
             if isinstance(error, ignored):
-               return
+                return
 
         # ==== DISCORD PYTHON ERRORS ====
 
