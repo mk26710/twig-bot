@@ -4,14 +4,6 @@ from Twig.Utils.UserConverter import Target
 from Twig.Utils.HugMessages import do_hug
 
 
-# ====================================
-
-
-# MAINTAINER CHECKER
-def check_if_maintainer(ctx):
-    return ctx.author.id in BOT_MAINTAINERS
-
-
 class Utils(commands.Cog, name='Разное'):
 
     def __init__(self, bot):

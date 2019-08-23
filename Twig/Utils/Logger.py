@@ -4,23 +4,13 @@ import datetime
 
 
 class Logger:
-    def __init__(self,
-                 logger_type='info',
-                 logger_title=None,
-                 logger_footer=None,
-                 logger_info=None,
-                 logger_timestamp=True,
-                 log_to=None,
-                 client=None):
+    def __init__(self, logger_type='info', logger_title=None, logger_footer=None, logger_info=None):
         self.type = logger_type
         self.title = logger_title
         self.footer = logger_footer
         self.info = logger_info
-        self.client = client
-        self.log_to = log_to
-        self.timestamp = logger_timestamp
 
-    async def send_log(self):
+    async def send_log(self, client, log_to, timestamp=True):
         log_embed = discord.Embed(
             title=self.title,
             description=self.info
@@ -37,11 +27,11 @@ class Logger:
         else:
             log_embed.colour = DEFAULT_COLOR
 
-        if self.timestamp is True:
+        if timestamp is True:
             log_embed.timestamp = datetime.datetime.utcnow()
 
         if self.footer is not None:
             log_embed.set_footer(text=str(self.footer))
 
-        channel = discord.Client.get_channel(self.client, self.log_to)
+        channel = discord.Client.get_channel(client, log_to)
         return await channel.send(embed=log_embed)

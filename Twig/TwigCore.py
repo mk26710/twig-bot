@@ -2,7 +2,6 @@ from dotenv import load_dotenv, dotenv_values
 from discord.ext.commands import BucketType
 from contextlib import redirect_stdout
 from Twig.Workers.Configurator import *
-# from Twig.SQL.Functionality import *
 from Twig.SQL.AsyncFunctionality import *
 import pathlib
 import datetime

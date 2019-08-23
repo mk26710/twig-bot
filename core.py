@@ -1,12 +1,9 @@
 from discord.ext import commands
 from Twig.TwigCore import *
 
-# ====================================
 
 bot = commands.AutoShardedBot(command_prefix=commands.when_mentioned_or(BOT_PREFIX))
-
 logging.basicConfig(level=logging.INFO)
-
 
 # logger = logging.getLogger('discord')
 # logger.setLevel(logging.INFO)
@@ -14,7 +11,6 @@ logging.basicConfig(level=logging.INFO)
 # handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 # logger.addHandler(handler)
 
-# ====================================
 
 async def bot_initializer():
     # Инициализация модулей
@@ -111,11 +107,4 @@ async def hot_reload(ctx):
     return print(f'[CORE] {ctx.author.id} just did a HOT RELOAD')
 
 
-# ====================================
-
 bot.run(BOT_TOKEN)
-
-# ====================================
-
-if __name__ == '__main__':
-    pass

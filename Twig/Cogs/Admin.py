@@ -4,8 +4,6 @@ from Twig.Utils.Logger import Logger
 from Twig.Utils.UserConverter import Target
 
 
-# ====================================
-
 class Admin(commands.Cog, name='Админские'):
 
     def __init__(self, bot):
@@ -75,9 +73,8 @@ class Admin(commands.Cog, name='Админские'):
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
                         f' изменяет баланс **{user.tag}** (`{user.strID}`)\n\n' +
                         f'**Добавляет к балансу:** {xp} очков опыта\n' +
-                        f'**Новый баланс:** {temp_xp} очков опыта',
-            log_to=BOT_XP_LOGS, client=self.bot
-        ).send_log()
+                        f'**Новый баланс:** {temp_xp} очков опыта'
+        ).send_log(self.bot, BOT_XP_LOGS)
 
         return await message.edit(
             embed=discord.Embed(
@@ -124,9 +121,8 @@ class Admin(commands.Cog, name='Админские'):
             logger_type='info', logger_title='Админское изменение баланса',
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
                         f' изменяет баланс **{user.tag}** (`{user.strID}`)\n\n' +
-                        f'**Новый баланс:** {new_xp} очков опыта',
-            log_to=BOT_XP_LOGS, client=self.bot
-        ).send_log()
+                        f'**Новый баланс:** {new_xp} очков опыта'
+        ).send_log(self.bot, BOT_XP_LOGS)
 
         return await message.edit(
             embed=discord.Embed(
@@ -156,9 +152,8 @@ class Admin(commands.Cog, name='Админские'):
             await Logger(
                 logger_type='success', logger_title='Добавление пользователя в БД',
                 logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
-                            f' добавляет **{user}** (`{user.id}`) в базу данных',
-                log_to=BOT_XP_LOGS, client=self.bot
-            ).send_log()
+                            f' добавляет **{user}** (`{user.id}`) в базу данных'
+            ).send_log(self.bot, BOT_XP_LOGS)
 
             return await ctx.send(embed=discord.Embed(
                 colour=SUCCESS_COLOR,
@@ -188,8 +183,7 @@ class Admin(commands.Cog, name='Админские'):
             logger_type='err', logger_title='Удаление пользователя из БД',
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
                         f' удаляет **{user.tag}** (`{user.strID}`) из базы данных',
-            log_to=BOT_XP_LOGS, client=self.bot
-        ).send_log()
+        ).send_log(self.bot, BOT_XP_LOGS)
 
         return await ctx.send(embed=discord.Embed(
             title='Операция выполнена!',
@@ -214,9 +208,8 @@ class Admin(commands.Cog, name='Админские'):
         await Logger(
             logger_type='err', logger_title='Удаление пользователя из БД',
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
-                        f' принудительно удаляет **{user}** из базы данных',
-            log_to=BOT_XP_LOGS, client=self.bot
-        ).send_log()
+                        f' принудительно удаляет **{user}** из базы данных'
+        ).send_log(self.bot, BOT_XP_LOGS)
 
         return await ctx.send(embed=discord.Embed(
             title='Операция выполнена!',
@@ -243,9 +236,8 @@ class Admin(commands.Cog, name='Админские'):
         await Logger(
             logger_type='warn', logger_title='Админское изменение баланса',
             logger_info=f'**{ctx.author.name}#{ctx.author.discriminator}** (`{ctx.author.id}`)' +
-                        f' сбрасывает баланс для **{user.tag}** (`{user.strID}`)\n\n',
-            log_to=BOT_XP_LOGS, client=self.bot
-        ).send_log()
+                        f' сбрасывает баланс для **{user.tag}** (`{user.strID}`)\n\n'
+        ).send_log(self.bot, BOT_XP_LOGS)
 
         return await ctx.send(
             f"Бан успешно произошел! Бип! Радостный буп! Шучу." +

@@ -3,8 +3,6 @@ from Twig.TwigCore import *
 from Twig.Utils.UserConverter import Target
 from Twig.Utils.IgnoreChannels import LEVELS_IGNORED_CHANNELS as IGNORED_CHANNELS
 
-# ====================================
-
 
 class Levels(commands.Cog, name='Уровни'):
 

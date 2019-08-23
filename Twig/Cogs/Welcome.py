@@ -32,8 +32,7 @@ class Welcomer(commands.Cog, name="Добро пожаловать"):
             await Logger(
                 logger_type='err', logger_title=':x: Ошибка',
                 logger_info=f'{str(err)}',
-                log_to=BOT_MAIN_LOGS, client=self.bot
-            ).send_log()
+            ).send_log(self.bot, BOT_MAIN_LOGS)
             raise err
 
 

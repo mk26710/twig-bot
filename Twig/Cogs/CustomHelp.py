@@ -1,8 +1,6 @@
 from discord.ext import commands
 
 
-# ====================================
-
 class MyHelpCommand(commands.DefaultHelpCommand):
     def get_ending_note(self):
         return 'Используйте {0.clean_prefix}help <команда>, '.format(self) + \

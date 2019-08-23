@@ -2,8 +2,6 @@ from discord.ext import commands
 from Twig.TwigCore import *
 
 
-# ====================================
-
 class Shop(commands.Cog, name='Магазинчик'):
 
     def __init__(self, bot):
