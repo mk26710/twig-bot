@@ -1,6 +1,6 @@
 # Twig Bot
 [![BCH compliance](https://bettercodehub.com/edge/badge/runic-tears/twig-bot?branch=master)](https://bettercodehub.com/)
-[![License](https://img.shields.io/github/license/runic-tears/twig-bot)](https://shields.io/)
+[![License](https://img.shields.io/github/license/runic-tears/twig-bot)](./LICENSE)
 
 Бот, созданный специально для Discord-сервера «The Library»
 
